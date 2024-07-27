@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@font-face {
+  font-family: 'Reem-Kufi-Fun';
+  scr: url('/fonts/ReemKufi[wght].ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.overlay {
+  position: absolute;
+  top: -100px;
+  left: -50px;
+  width: 50%; /* Adjust this size to control the diameter of the circle */
+  height: 120vh; /* Adjust this size to control the diameter of the circle */
+  background-color: #ecfbf6;
+  border-radius: 0 40% 90% 0;
+  opacity: 0.7;
+  z: 1;
+}
+.form-input {
+  @apply px-2 py-1 outline-none;
+}
+
+.form-label {
+  @apply flex items-center my-2 border rounded-md py-1 px-2 bg-white border-gray-800 hover:border-2;
+}
+
+.form-button {
+  @apply bg-[#002C4C] rounded-lg text-xl w-96 text-white font-roboto-serif  py-1 text-[18px] font-semibold my-1;
+}
+.form-heading {
+  @apply text-center my-6 text-3xl font-roboto-serif font-semibold;
+}
+
+.custom-div {
+  background: #8585851a;
+
+  box-shadow: -4.6px 4.6px 4.6px 0px #ffffff1a inset;
+  border-radius: 12px;
+  padding: 6px 10px;
+
+  box-shadow: 4.6px -4.6px 4.6px 0px #a7a7a71a inset;
+}
