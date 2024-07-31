@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { loginRequest } from '@/services/userService';
+import { getCurrentUser, loginRequest } from '@/services/userService';
 import { useRouter } from 'next/navigation';
+import GoogleAuthButton from '@/components/GoogleAuthButton';
 
 const blankData = {
   email: '',
@@ -12,6 +13,7 @@ const blankData = {
 
 const LoginPage = () => {
   const [formData, setFormData] = useState(blankData);
+  const [error, setError] = useState('');
   const router = useRouter();
 
   // form data change
@@ -31,16 +33,28 @@ const LoginPage = () => {
       alert('kindly fill all the details!');
       return;
     }
-    const temp = await loginRequest(email, password);
-    if (temp.jwt && temp.user) {
-      router.push('/');
-    }
+    try {
+      const temp = await loginRequest(email, password);
+      console.log('temp', temp);
 
-    setFormData(blankData);
+      if (temp.jwt && temp.user) {
+        router.push('/');
+      }
+
+      setFormData(blankData);
+    } catch (error) {
+      console.log('error while loggin', error.message);
+      if (error.message.includes('Network Error')) {
+        setError('Network Error !');
+      } else if (error.message.includes("Cannot read properties of undefined (reading 'jwt')")) {
+        setError('Wrong Credentials! Please Try again');
+      }
+    }
   };
   return (
     <div>
       <div className="form-heading">Sign In</div>
+      <div className="text-[#C90000] text-[14px] font-medium">{error}</div>
       <form onSubmit={handleFormSubmit} className="flex flex-col">
         {/* Email */}
         <label htmlFor="email" className="form-label">
@@ -93,6 +107,7 @@ const LoginPage = () => {
           Sign Up!
         </Link>
       </div>
+      <GoogleAuthButton text={'Google Sign In'} />
     </div>
   );
 };

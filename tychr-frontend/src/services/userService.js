@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { showToast } from '@/utils/ToastOptions';
 
 export const api_url = process.env.NEXT_PUBLIC_STRAPI_URL;
 
@@ -8,10 +10,11 @@ export const loginRequest = async (username, password) => {
       identifier: username,
       password: password,
     });
-    return res.data;
+    if (res.status === 200) {
+      return res.data;
+    }
   } catch (error) {
     console.error('Login Error:', error);
-    throw error;
   }
 };
 
@@ -26,8 +29,7 @@ export const registerRequest = async (fullname, email, phone, password, profile)
     });
     return res.data;
   } catch (error) {
-    console.error('Register Error: ', error);
-    throw error;
+    console.error('userService.js : Register Error: ', error);
   }
 };
 
@@ -38,8 +40,11 @@ export const getCurrentUser = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    return res.data;
   } catch (error) {
     console.log('JWTCheck Error:', error);
+    return error;
     throw error;
   }
 };
@@ -53,6 +58,7 @@ export const forgotPasswordEmail = async (email) => {
     return res.data;
   } catch (error) {
     console.log('Failed to send email:', error);
+    return error;
   }
 };
 

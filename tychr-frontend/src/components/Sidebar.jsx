@@ -7,16 +7,17 @@ import Image from 'next/image';
 // SideBarOptions
 const sideBarOptions = [
   { name: 'Home', icon: '/icons/home.png', link: '/' },
-  { name: 'Course', icon: '/icons/course.png', link: '/' },
-  { name: 'Live', icon: '/icons/live.png', link: '/' },
-  { name: 'Educators', icon: '/icons/educators.png', link: '/' },
-  { name: 'Settings', icon: '/icons/settings.png', link: '/' },
-  { name: 'Profile', icon: '/icons/profile.png', link: '/' },
-  { name: 'Contact Us', icon: '/icons/contact.png', link: '/' },
+  { name: 'Course', icon: '/icons/course.png', link: '/course' },
+  { name: 'Live', icon: '/icons/live.png', link: '/live' },
+  { name: 'Educators', icon: '/icons/educators.png', link: '/educators' },
+  { name: 'Settings', icon: '/icons/settings.png', link: '/settings' },
+  { name: 'Profile', icon: '/icons/profile.png', link: '/profile' },
+  { name: 'Contact Us', icon: '/icons/contact.png', link: '/contactus' },
 ];
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({ user }) => {
+  console.log('userdata', user);
+  const [isOpen, setIsOpen] = useState(true);
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -24,14 +25,14 @@ const Sidebar = () => {
     <div className="relative mt-2 h-full">
       <ToggleButton toggleSidebar={toggleSidebar} isOpen={isOpen} />
       {isOpen && (
-        <div className="w-[185px] bg-[#ECFBF6] flex flex-col justify-start items-center h-full">
+        <div className="w-[185px]  bg-[#ECFBF6] flex flex-col justify-start items-center h-full">
           {/* User detail */}
           <div className="flex flex-col justify-center items-center py-10">
             <div>
               <Image src="/user-avatar.png" width={50} height={50} alt="profile-image" />
             </div>
-            <div className="text-sm font-semibold">Username</div>
-            <div className="text-xs text-[#6C6C6C]">Role</div>
+            <div className="text-sm font-semibold">{user?.username}</div>
+            <div className="text-xs text-[#6C6C6C]">{user?.profile}</div>
           </div>
           <div className="">
             {sideBarOptions.map((item, index) => (

@@ -1,5 +1,8 @@
+'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 import React from 'react';
+import CourseModal from './CourseModal';
 
 const customCourses = [
   {
@@ -49,8 +52,10 @@ const OurCoursesSection = () => {
 
 const CoursePreview = ({ item }) => {
   const { image, courseName, teacherName, totalLectures, date } = item;
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="bg-[#E8FFF7] p-2">
+    <div className="bg-[#E8FFF7] p-2" onClick={() => setIsOpen((prev) => !prev)}>
       <Image src={image} width={196} height={104} alt={courseName} />
       <div className="flex justify-between items-center py-1">
         <div className="text-sm font-medium">{courseName}</div>
@@ -61,6 +66,8 @@ const CoursePreview = ({ item }) => {
 
         <div className="text-xs font-normal text-[#242424]">{totalLectures}</div>
       </div>
+      {/* Modal for specific course */}
+      {isOpen == true && <CourseModal setIsOpen={setIsOpen} />}
     </div>
   );
 };

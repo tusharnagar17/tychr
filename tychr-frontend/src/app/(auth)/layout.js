@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AuthLayout({ children }) {
   return (
@@ -18,6 +20,9 @@ export default function AuthLayout({ children }) {
         <Image src="/tycher-logo.png" width={200} height={200} alt="tycher-logo" />
       </div>
       <div className="">{children}</div>
+      <div className="absolute">
+        <ToastContainer />
+      </div>
     </div>
   );
 }

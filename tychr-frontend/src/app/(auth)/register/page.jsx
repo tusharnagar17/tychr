@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { registerRequest } from '@/services/userService';
 import { useRouter } from 'next/navigation';
 import ProfileSelection from '@/components/ProfileSelection';
+import GoogleAuthButton from '@/components/GoogleAuthButton';
 
 const blankData = {
   fullname: '',
@@ -17,6 +18,7 @@ const blankData = {
 const RegisterPage = () => {
   const [formData, setFormData] = useState(blankData);
   const [profile, setProfile] = useState('');
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -33,17 +35,34 @@ const RegisterPage = () => {
   const handleFormSubmit = async (ev) => {
     ev.preventDefault();
     const { fullname, email, phone, password, confirmPassword } = formData;
-
-    if (!(fullname && email && phone && password && confirmPassword && profile)) {
-      alert('kindly fill all the details');
+    if (!(email || phone)) {
+      setError('Require either phone or email');
       return;
     }
+    if (!(fullname && password && confirmPassword && profile)) {
+      setError('Kindly fill required detail ! ');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    try {
+      const temp = await registerRequest(fullname, email, phone, password, profile);
 
-    await registerRequest(fullname, email, phone, password, profile);
+      if (temp?.jwt && temp?.user) {
+        router.push('/');
+      } else {
+        setError('Registration failed, please try again.');
+      }
 
-    // push login page
-    router.push('/login');
-    setFormData(blankData);
+      setFormData(blankData);
+    } catch (error) {
+      console.log('error while registering', error.message);
+      if (error.message.includes('Network Error')) {
+        setError('Network Error !');
+      }
+    }
   };
 
   if (!profile) {
@@ -53,6 +72,7 @@ const RegisterPage = () => {
   return (
     <div>
       <div className="form-heading">Sign Up</div>
+      <div className="text-[#C90000] text-[14px] font-medium">{error}</div>
       <form onSubmit={handleFormSubmit} className="flex flex-col">
         {/* Name */}
         <label htmlFor="fullname" className="form-label">
@@ -163,6 +183,7 @@ const RegisterPage = () => {
           Sign in!
         </Link>
       </div>
+      <GoogleAuthButton text="Google Sign Up" />
     </div>
   );
 };
